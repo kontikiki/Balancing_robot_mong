@@ -144,9 +144,9 @@ void setup(){
     gyro_yaw_calibration_value+=Wire.read()<<8|Wire.read();             //Combine the two bytes to make one integer
     delayMicroseconds(3700);                                                //Wait for 3700 microseconds to simulate the main program loop time
   }
-  gyro_roll_calibration_value/=500;
-  gyro_pitch_calibration_value /= 500;                                      //Divide the total value by 500 to get the avarage gyro offset
-  gyro_yaw_calibration_value /= 500;                                        //Divide the total value by 500 to get the avarage gyro offset
+  gyro_roll_calibration_value/=500.0;
+  gyro_pitch_calibration_value /= 500.0;                                      //Divide the total value by 500 to get the avarage gyro offset
+  gyro_yaw_calibration_value /= 500.0;                                        //Divide the total value by 500 to get the avarage gyro offset
 
 for(counter = 0; counter < 500;counter++){  
   if(counter % 15 == 0)digitalWrite(13, !digitalRead(13)); 
@@ -160,9 +160,9 @@ for(counter = 0; counter < 500;counter++){
   acc_z_calibration_value+=Wire.read()<<8|Wire.read(); 
   delayMicroseconds(3700);
 }
-  acc_x_calibration_value/=500;
-  acc_y_calibration_value/=500;
-  acc_z_calibration_value/=500;
+  acc_x_calibration_value/=500.0;
+  acc_y_calibration_value/=500.0;
+  acc_z_calibration_value/=500.0;
 
 digitalWrite(8, LOW);
   digitalWrite(9, LOW);
@@ -191,12 +191,8 @@ digitalWrite(8, LOW);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void loop(){
   static uint16_t lastUpdate = 0;
- 
-  static int sonar_steady_cnt=0;
 
   static long last_sonar=0;
-   static int sonar_index=0;
-   
 
 if((micros()-last_sonar)>100000)
   {   
@@ -252,8 +248,6 @@ else
   }
   receive_counter=0;
   }
-  
-
 
   if(Serial.available()){                                                   //If there is serial data available
     received_byte = Serial.read();                                          //Load the received serial data in the received_byte variable
@@ -494,26 +488,4 @@ ISR(TIMER1_COMPA_vect){
   }
   else if(throttle_counter_right_motor==1)PORTD |= 0b00010000;            //Set output 4 high to create a pulse for the stepper controller
   else if(throttle_counter_right_motor==2)PORTD &= 0b11101111;            //Set output 4 low because the pulse only has to last for 20us
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
